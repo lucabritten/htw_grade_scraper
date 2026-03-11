@@ -140,25 +140,6 @@ Eintrag hinzufügen:
 
 Wichtig: Der Cronjob muss das Python aus der virtuellen Umgebung (`venv`) verwenden, sonst findet Python die installierten Pakete nicht.
 
-Bedeutung:
-
-```
-Minute 0, alle 3 Stunden
-```
-
-Das Script läuft dann um:
-
-```
-00:00
-03:00
-06:00
-09:00
-12:00
-15:00
-18:00
-21:00
-```
-
 ---
 
 # Funktionsweise
