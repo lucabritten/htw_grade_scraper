@@ -1,4 +1,4 @@
-# HTW Saar Noten Scraper
+# HTW Saar Grade Tracker
 
 Dieses Python-Script überprüft automatisch die **Leistungsübersicht im HTW SIM-Portal** und sendet eine **Telegram-Nachricht**, sobald eine neue Note eingetragen wurde.
 
