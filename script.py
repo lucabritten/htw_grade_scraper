@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support import expected_conditions as EC
 import requests
 import pdfplumber
@@ -35,7 +37,9 @@ def login_and_download_pdf(username: str, password: str) -> str:
     options = webdriver.ChromeOptions()
     options.add_argument("--headless=new")
     
-    driver = webdriver.Chrome(options=options)
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=options)
     
     driver.get("https://sim.htwsaar.de")
     
@@ -177,7 +181,7 @@ def main():
         json.dump(new_grades, f, indent=4)
 
 if __name__ == "__main__":
-    send_telegram_msg("Started", telegram_token, telegram_chat_id)
+    send_telegram_msg("Started checking grades...", telegram_token, telegram_chat_id)
     try:
         with open("tmp/grades.json") as f:
             old_grades = json.load(f)

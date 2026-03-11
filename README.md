@@ -38,9 +38,6 @@ noten_scraper/
 
 - Python **3.10+**
 - Google Chrome
-- ChromeDriver
-- Telegram Bot
-
 ---
 
 # Installation
@@ -52,11 +49,25 @@ git clone https://github.com/USERNAME/noten_scraper.git
 cd noten_scraper
 ```
 
+Virtuelle Python‑Umgebung erstellen:
+
+```bash
+python3 -m venv venv
+```
+
+Virtuelle Umgebung aktivieren:
+
+```bash
+source venv/bin/activate
+```
+
 Python Abhängigkeiten installieren:
 
 ```bash
 pip install -r requirements.txt
 ```
+
+Hinweis: Wenn die Umgebung aktiv ist, beginnt dein Terminalprompt mit `(venv)`.
 
 ---
 
@@ -124,8 +135,10 @@ crontab -e
 Eintrag hinzufügen:
 
 ```
-0 */3 * * * /opt/homebrew/bin/python3 "/Users/USERNAME/noten_scraper/script.py"
+0 */3 * * * /Users/USERNAME/noten_scraper/venv/bin/python /Users/USERNAME/noten_scraper/script.py
 ```
+
+Wichtig: Der Cronjob muss das Python aus der virtuellen Umgebung (`venv`) verwenden, sonst findet Python die installierten Pakete nicht.
 
 Bedeutung:
 
@@ -182,8 +195,7 @@ Das Script funktioniert nur solange:
 
 - das Layout der Leistungsübersicht gleich bleibt
 - das HTW SIM Portal nicht verändert wird
-
-Falls sich das Portal ändert, muss der Selenium Teil angepasst werden.
+- ChromeDriver wird automatisch über `webdriver-manager` installiert, es ist keine manuelle Installation nötig.
 
 ---
 

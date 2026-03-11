@@ -2,3 +2,4 @@ selenium
 requests
 pdfplumber
 python-dotenv
+webdriver-manager
