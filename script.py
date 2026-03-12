@@ -12,7 +12,9 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-os.makedirs("tmp", exist_ok=True)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+TMP_DIR = os.path.join(BASE_DIR, "tmp")
+os.makedirs(TMP_DIR, exist_ok=True)
 
 username = os.getenv("UNI_USER")
 password = os.getenv("UNI_PASSWD")
@@ -86,7 +88,8 @@ def login_and_download_pdf(username: str, password: str) -> str:
         import base64
         pdf_bytes = base64.b64decode(pdf_base64)
 
-        with open("tmp/grades.pdf", "wb") as f:
+        pdf_path = os.path.join(TMP_DIR, "grades.pdf")
+        with open(pdf_path, "wb") as f:
             f.write(pdf_bytes)
 
     else:
@@ -96,12 +99,24 @@ def login_and_download_pdf(username: str, password: str) -> str:
         r = requests.get(pdf_url, cookies=cookies, headers=headers)
         r.raise_for_status()
 
-        with open("tmp/grades.pdf", "wb") as f:
+        pdf_path = os.path.join(TMP_DIR, "grades.pdf")
+        with open(pdf_path, "wb") as f:
             f.write(r.content)
     
     driver.quit()
     
-    return "tmp/grades.pdf"
+    return os.path.join(TMP_DIR, "grades.pdf")
+
+def normalize_module_name(name: str) -> str:
+    """
+    Normalizes module names so small formatting differences in the PDF
+    (like appended ECTS numbers) do not create new entries.
+    Example:
+        "Software Engineering WiSe 2025 5" -> "Software Engineering WiSe 2025"
+    """
+    # remove trailing ECTS numbers like " 5" or " 10"
+    name = re.sub(r"\s+\d+$", "", name)
+    return name.strip()
 
 def parse_pdf(path: str) -> dict:
     """
@@ -129,7 +144,8 @@ def parse_pdf(path: str) -> dict:
     grades = {}
     
     for module, grade in matches:
-        grades[module.strip()] = grade
+        module_name = normalize_module_name(module)
+        grades[module_name] = grade
         
     return grades
 
@@ -177,13 +193,13 @@ def main():
     
     send_notifications(messages)
     
-    with open("tmp/grades.json", "w") as f:
-        json.dump(new_grades, f, indent=4)
+    with open(os.path.join(TMP_DIR, "grades.json"), "w") as f:
+        json.dump(new_grades, f, indent=4, sort_keys=True)
 
 if __name__ == "__main__":
     send_telegram_msg("Started checking grades...", telegram_token, telegram_chat_id)
     try:
-        with open("tmp/grades.json") as f:
+        with open(os.path.join(TMP_DIR, "grades.json")) as f:
             old_grades = json.load(f)
     except FileNotFoundError:
         old_grades = {}
