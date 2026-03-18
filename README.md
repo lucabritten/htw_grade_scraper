@@ -39,6 +39,7 @@ noten_scraper/
 
 - Python **3.10+**
 - Google Chrome
+
 ---
 
 # Installation
@@ -56,6 +57,8 @@ Setup‑Script ausführen:
 chmod +x setup.sh
 ./setup.sh
 ```
+
+**Wichtig:** Stelle sicher, dass Google Chrome installiert ist, da das Script Selenium verwendet.
 
 Das Setup‑Script übernimmt automatisch:
 
@@ -78,7 +81,25 @@ UNI_USER=dein_hiz_username
 UNI_PASSWD=dein_hiz_passwort
 TELEGRAM_TOKEN=telegram_bot_token
 TELEGRAM_CHAT_ID=deine_chat_id
+SAP_OVERVIEW_URL=URL_zu_deiner_Übersicht
 ```
+
+---
+
+# SAP-Overview URL herausfinden
+
+1. Öffne das SIM-Portal
+2. Klicke auf 'Meine Dokumente'
+3. Klicke auf Leistungsübersicht
+4. Wähle deinen Studiengang aus
+
+Nun solltest du folgenden Screen sehen:
+
+<p align="center">
+  <img src="ressources/sap-screen-example.png" alt="SAP Screen" width="600"/>
+</p>
+
+5. Kopiere die URL dieser Seite und füge sie in deine `.env` Datei unter `SAP_OVERVIEW_URL` ein
 
 ---
 

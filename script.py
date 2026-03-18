@@ -19,6 +19,8 @@ os.makedirs(TMP_DIR, exist_ok=True)
 username = os.getenv("UNI_USER")
 password = os.getenv("UNI_PASSWD")
 
+sap_overview_url = os.getenv("SAP_OVERVIEW_UR")
+
 telegram_token = os.getenv("TELEGRAM_TOKEN")
 telegram_chat_id = os.getenv("TELEGRAM_CHAT_ID")
 
@@ -59,7 +61,7 @@ def login_and_download_pdf(username: str, password: str) -> str:
     
     wait.until(EC.url_changes(current_url))
     
-    driver.get("https://sim.htwsaar.de/sap/bc/ui5_ui5/sap/yslcmcertificat/index.html#/LeistungsuebersichtSet/5017326,%2050000467,%20B.Sc.%20Praktische%20Informatik,%20EN")
+    driver.get(sap_overview_url)
     
     download_button = wait.until(
         EC.element_to_be_clickable((By.XPATH, '//*[@id="container-cm.slcm.certificate---detail3--pdfViewer-popupDownloadButton"]'))
